@@ -1,0 +1,69 @@
+<!-- 좋아요 버튼 -->
+<div id="my-like" data-reblog="/home/send_msg" data-id="{PostID}" title="Like">
+    
+    <!--좋아요 수 출력-->
+    <p id="like_number"><%= @posts.last.id %></p>
+    
+
+</div>
+
+
+
+
+<!-- 좋아요 버튼 동작 스크립트-->
+    <script>
+          window.onload = function () {
+          document.body.insertAdjacentHTML( 'beforeEnd', '<iframe id="my-like-frame" style="display:none;"></iframe>' );
+          document.addEventListener( 'click', function ( event ) {
+              var myLike = event.target;
+              if( myLike.className.indexOf( 'my-like' ) > -1 ) {
+                  var frame = document.getElementById( 'my-like-frame' ),
+                      liked = ( myLike.className == 'my-liked' ),
+                      command = liked ? 'unlike' : 'like',
+                      reblog = myLike.getAttribute( 'data-reblog' ),
+                      id = myLike.getAttribute( 'data-id' ),
+                      oauth = reblog.slice( -8 );
+                  frame.src = 'http://www.tumblr.com/' + command + '/' + oauth + '?id=' + id;
+                  liked ? myLike.className = 'my-like' : myLike.className = 'my-liked';
+              };
+          }, false );
+          }; 
+    </script>
+    
+     <!--좋아요 버튼 스크립트-->
+    <script>
+      window.onload = function () {
+      document.body.insertAdjacentHTML( 'beforeEnd', '<iframe id="my-like-frame" style="display:none;"></iframe>' );
+      document.addEventListener( 'click', function ( event ) {
+          var myLike = event.target;
+          if( myLike.className.indexOf( 'my-like' ) > -1 ) {
+              var frame = document.getElementById( 'my-like-frame' ),
+                  liked = ( myLike.className == 'my-liked' ),
+                  command = liked ? 'unlike' : 'like',
+                  reblog = myLike.getAttribute( 'data-reblog' ),
+                  id = myLike.getAttribute( 'data-id' ),
+                  oauth = reblog.slice( -8 );
+              frame.src = 'http://www.tumblr.com/' + command + '/' + oauth + '?id=' + id;
+              liked ? myLike.className = 'my-like' : myLike.className = 'my-liked';
+          };
+      }, false );
+      }; 
+    </script>
+    
+    <!--좋아요 수 스크립트-->
+    <script>
+        $(function() {
+            var num = <%= @posts.last.id %>
+            $("#my-like").click(
+                function(){
+                    $.ajax({
+                        url: "/home/send_msg",
+                        success: function(){
+                            num = num + 1
+                            $("#like_number").html(num);
+ }
+                    });
+                }
+            );
+        });
+    </script>
